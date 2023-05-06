@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """The total runtime of 10 seconds is due to the fact that each call to
 async_comprehension is awaiting for 10 random numbers to be generated with
 a one-second delay between each number """
