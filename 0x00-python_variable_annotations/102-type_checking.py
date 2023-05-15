@@ -5,7 +5,7 @@ following piece of code and apply any necessary changes
 from typing import List, Tuple, Union
 
 
-def zoom_array(lst: Tuple[int, ...], factor: int = 2) -> Tuple[int, ...]:
+def zoom_array(lst: Tuple, factor: int = 2) -> List:
     """_summary_
 
     Args:
