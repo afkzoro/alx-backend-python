@@ -9,6 +9,3 @@ def element_length(lst: Iterable[Sequence]) -> List[
     """ Well annotated function
     """
     return [(i, len(i)) for i in lst]
-
-
-print(element_length.__annotations__)
