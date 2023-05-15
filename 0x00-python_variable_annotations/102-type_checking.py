@@ -2,24 +2,24 @@
 """ Task-12 Use mypy to validate the
 following piece of code and apply any necessary changes
 """
-from typing import List, Tuple, Union
+from typing import List, Tuple
 
 
-def zoom_array(lst: Tuple, factor: int = 2) -> List:
+def zoom_array(lst: Tuple, factor: int = 2) -> List[int]:
     """_summary_
 
     Args:
-        lst (Tuple[int, ...]): _description_
+        lst (Tuple): _description_
         factor (int, optional): _description_. Defaults to 2.
 
     Returns:
-        Tuple[int, ...]: _description_
+        List[int]: _description_
     """
     zoomed_in: List[int] = [
         item for item in lst
-        for i in range(factor)
+        for _ in range(factor)
     ]
-    return tuple(zoomed_in)
+    return zoomed_in
 
 
 array = (12, 72, 91)
