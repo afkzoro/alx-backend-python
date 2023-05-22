@@ -19,13 +19,16 @@ def access_nested_map(nested_map: Dict[str, Any], path: Tuple[str]) -> Any:
 
     Returns:
         Any: The value at the specified path.
+
+    Raises:
+        KeyError: If the specified path is not found in the nested dictionary.
     """
     try:
         for key in path:
             nested_map = nested_map[key]
         return nested_map
     except (KeyError, TypeError):
-        raise
+        raise KeyError(f"Key not found: {path}")
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -43,6 +46,18 @@ class TestAccessNestedMap(unittest.TestCase):
         Test the access_nested_map function.
         """
         self.assertEqual(access_nested_map(nested_map, path), expected_result)
+
+    @parameterized.expand([
+        ({}, ("a",)),
+        ({"a": 1}, ("a", "b"))
+    ])
+    def test_access_nested_map_exception(self, nested_map, path):
+        """
+        Test that KeyError is raised for invalid paths.
+        """
+        with self.assertRaises(KeyError) as cm:
+            access_nested_map(nested_map, path)
+        self.assertEqual(str(cm.exception), f"Key not found: {path}")
 
 
 if __name__ == "__main__":
