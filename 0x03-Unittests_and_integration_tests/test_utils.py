@@ -17,11 +17,11 @@ class TestGetJson(unittest.TestCase):
     Unit tests for the get_json function.
     """
 
-    @patch('utils.requests.get')
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False})
     ])
+    @patch('utils.requests.get')
     def test_get_json(self, test_url, test_payload, mock_get):
         """
         Test the get_json function with mocked requests.get.
