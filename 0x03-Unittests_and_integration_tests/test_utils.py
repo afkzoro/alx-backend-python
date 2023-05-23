@@ -9,7 +9,8 @@ from typing import Any, Dict, Tuple
 import unittest
 from parameterized import parameterized
 from unittest.mock import patch
-from utils import get_json
+from utils import get_json, memoize
+from testclass import TestClass
 
 
 class TestGetJson(unittest.TestCase):
@@ -82,6 +83,30 @@ class TestAccessNestedMap(unittest.TestCase):
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
         self.assertEqual(str(cm.exception), repr(f"Key not found: {path}"))
+
+
+class TestMemoize(unittest.TestCase):
+    """
+    Unit tests for the memoize decorator.
+    """
+
+    @patch('testclass.TestClass.a_method')
+    def test_memoize(self, mock_a_method):
+        """
+        Test the memoize decorator.
+        """
+        mock_a_method.return_value = 42
+
+        test_instance = TestClass()
+
+        # First call to a_property
+        result1 = test_instance.a_property
+        # Second call to a_property
+        result2 = test_instance.a_property
+
+        mock_a_method.assert_called_once()
+        self.assertEqual(result1, 42)
+        self.assertEqual(result2, 42)
 
 
 if __name__ == "__main__":
