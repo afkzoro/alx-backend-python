@@ -8,6 +8,30 @@ A collection of utility functions.
 from typing import Any, Dict, Tuple
 import unittest
 from parameterized import parameterized
+from unittest.mock import patch
+from utils import get_json
+
+
+class TestGetJson(unittest.TestCase):
+    """
+    Unit tests for the get_json function.
+    """
+
+    @patch('utils.requests.get')
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}),
+        ("http://holberton.io", {"payload": False})
+    ])
+    def test_get_json(self, test_url, test_payload, mock_get):
+        """
+        Test the get_json function with mocked requests.get.
+        """
+        mock_get.return_value.json.return_value = test_payload
+
+        result = get_json(test_url)
+
+        mock_get.assert_called_once_with(test_url)
+        self.assertEqual(result, test_payload)
 
 
 def access_nested_map(nested_map: Dict[str, Any], path: Tuple[str]) -> Any:
