@@ -44,6 +44,18 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch.object(GithubOrgClient, '_public_repos_url',
                   new_callable=PropertyMock)
     def test_public_repos(self, mock_url, mock_get_json):
+        """
+        Test the public_repos method of GithubOrgClient.
+
+        Mocks the get_json function and the _public_repos_url property to
+        provide expected results.
+
+        Verifies that the list of repositories returned by the public_repos
+        method matches the expected list.
+
+        Also checks that the mocked property and the mocked get_json function
+        were called once.
+        """
         known_payload = [
             {"name": "repo1"},
             {"name": "repo2"},
