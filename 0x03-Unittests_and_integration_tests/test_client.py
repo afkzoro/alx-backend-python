@@ -40,21 +40,28 @@ class TestGithubOrgClient(unittest.TestCase):
             f"https://api.github.com/orgs/{org_name}"
         )
 
-    def test_public_repos_url(self):
-        # Define a known payload to be returned by the mocked org property
-        known_payload = {
-            "repos_url": "https://api.github.com/orgs/google/repos"
-            }
+    @patch('client.get_json')
+    @patch.object(GithubOrgClient, '_public_repos_url',
+                  new_callable=PropertyMock)
+    def test_public_repos(self, mock_url, mock_get_json):
+        known_payload = [
+            {"name": "repo1"},
+            {"name": "repo2"},
+            {"name": "repo3"}
+        ]
 
-        with patch.object(GithubOrgClient, "org",
-                          new_callable=PropertyMock) as mock_org:
+        mock_get_json.return_value = known_payload
+        mock_url.return_value = "https://api.github.com/orgs/google/repos"
 
-            mock_org.return_value = known_payload
+        org_name = "google"
+        client = GithubOrgClient(org_name)
 
-            org_name = "google"
-            client = GithubOrgClient(org_name)
-            expected_url = known_payload["repos_url"]
-            self.assertEqual(client._public_repos_url, expected_url)
+        repos = client.public_repos()
+        expected_repos = [repo["name"] for repo in known_payload]
+        self.assertEqual(repos, expected_repos)
+
+        mock_url.assert_called_once()
+        mock_get_json.assert_called_once()
 
 
 if __name__ == '__main__':
